@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+
+{% block title %}{{block.super}} | Edit task{% endblock title %}
+
+{% block content %}
+<div class="row mt-3">
+    <div class="col-3 col-s-12 menu">
+        <ul>
+            <li><a href="{% url 'todo:create_task' %}" class="btn-active"><i class="fas fa-edit"></i> Create New Task</a></li>
+            <li><a href="{% url 'todo:archive_tasks' %}" class="btn-inactive"><i class="fas fa-archive"></i> Archive</a></li>
+            <li><a href="{% url 'todo:trash_tasks' %}" class="btn-inactive"><i class="fas fa-trash-alt"></i> Trash</a>
+        </ul>
+    </div>
+    <div class="col-9 col-s-12">
+        <div class="container-fluid">
+            {% include 'inc/messages.html' %}
+        </div>
+        <div class="row">
+            <div class="d-flex justify-content-center">
+                <div class="card p-3 shadow col-6 rounded-3" id="create_task_box">
+                    <form action="" method="POST" class="m-0">
+                        {% csrf_token %}
+                        {{form | crispy }}
+                        <div class="d-grid gap-2 mt-2">
+                            <input type="submit" value="Update" class="btn btn-primary" id='submit_task_btn'>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="row row-cols-1 row-cols-md-3 g-4 mt-4">
+            {% for task in tasks %}
+                <div class="col">
+                    <div class="card shadow rounded-3">
+                        <div class="card-body">
+                            <h5 class="card-title">{{task.title}}</h5>
+                            <p class="card-text">
+                                {% with desc=task.description|linebreaks %}
+                                    {{ desc | truncatechars:40}}
+                                {% endwith %}
+                            </p>
+                        </div>
+                        <div class="card-footer">
+                            <button type="button" class="btn btn-primary btn-sm" data-mdb-toggle="modal" data-mdb-target="#Modal{{ forloop.counter }}">
+                                <i class="fas fa-info-circle"></i> Info
+                            </button>
+                            <a href="{% url 'todo:update_task' task.id %}" class="btn btn-warning btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                            <a href="{% url 'todo:archive_task' task.id %}" class="btn btn-info btn-sm"><i class="fas fa-archive"></i> Archive</a>
+                            <a href="{% url 'todo:delete_task' task.id %}" class="btn btn-danger btn-sm"><i class="fas fa-trash-alt"></i> Trash</a>
+                        </div>
+                    </div>  
+                    <div class="modal fade" id="Modal{{ forloop.counter }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel" style="line-break: anywhere;">{{task.title}}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    {{task.description | linebreaks}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

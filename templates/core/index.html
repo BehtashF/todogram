@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container mt-3">
+  {% include 'inc/messages.html' %}
+</div>
+
+<div class="card mt-5 text-white bg-primary col-4 shadow p-3 mb-5 rounded" style="margin: 0 auto; float: none; margin-bottom: 10px;padding: 25px 20px 25px 30px !important;">
+  <div class="row justify-content-md-center">
+    <div class="col" style="padding: 5px 10px 0px 10px;">
+      </h5><i class="fas fa-tasks"></i> Todo List</h5><br>
+      <small>Organize all your work with Todogram</small>
+    </div>
+    <div class="col">
+      <a href="{% url 'todo:create_task' %}" class="btn btn-light" style="float: right !important;margin-right: 20px !important;margin-top: 5px;">Create Task</a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

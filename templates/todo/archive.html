@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}{{block.super}} | Archive{% endblock title %}
+
+
+{% block content %}
+<div class="row mt-3">
+    <div class="col-3 col-s-12 menu">
+        <ul>
+            <li><a href="{% url 'todo:create_task' %}" class="btn-inactive"><i class="fas fa-edit"></i> Create New Task</a></li>
+            <li><a href="{% url 'todo:archive_tasks' %}" class="btn-active"><i class="fas fa-archive"></i> Archive</a></li>
+            <li><a href="{% url 'todo:trash_tasks' %}" class="btn-inactive"><i class="fas fa-trash-alt"></i> Trash</a>
+        </ul>
+    </div>
+    <div class="col-9 col-s-12">
+        <div class="container-fluid col-s-12">
+            {% include 'inc/messages.html' %}
+        </div>
+        {% if archives %}
+        <div class="row row-cols-1 row-cols-md-4 g-4">
+            {% for item in archives %}
+            <div class="col">
+                <div class="card shadow rounded-3">
+                    <div class="card-body">
+                        <h5 class="card-title">{{item.title}}</h5>
+                        <p class="card-text">{{item.description  | linebreaks}}</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{% url 'todo:archive_restore_tasks' item.id %}" class="btn btn-warning btn-sm"><i class="fas fa-trash-restore"></i> Restore</a>
+                        <a href="#" class="btn btn-danger btn-sm"><i class="fas fa-times-circle"></i> Delete</a>
+                    </div>
+                </div>  
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <h3 class="text-center mt-5">archive section is empty</h3>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+
+
+
+
